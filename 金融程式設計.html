@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>金融程式設計與應用</title>
+    <style>
+        img{
+          height: auto;
+          max-width: 100%;
+        }
+        #seven {font-family: 標楷體, monospace;}
+        .topnav {
+        background-color: #333;
+        overflow: hidden;
+        }
+        /* Style the links inside the navigation bar */
+        .topnav a {
+        float: left;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+        }
+        /* Change the color of links on hover */
+        .topnav a:hover {
+        background-color: #ddd;
+        color: black;
+        }
+
+        /* Add a color to the active/current link */
+        .topnav a.active {
+        background-color: #04AA6D;
+        color: white;
+        }
+    </style>
+</head>
+<body>
+    <header><h1 id="seven">113學年度各科成品展</h1></header>
+    <div class="topnav">
+        <a class="active" href="https://simonsohai.github.io/myweb/%E4%BD%9C%E5%93%81%E6%88%90%E6%9E%9C%E8%88%87%E5%80%8B%E4%BA%BA%E5%AD%97%E4%BB%8B.html">首頁</a>
+        <a href="https://simonsohai.github.io/myself/%E8%87%AA%E6%88%91%E4%BB%8B%E7%B4%B9.html">個人介紹</a>
+        <a href="https://simonsohai.github.io/learning/%E8%87%AA%E5%AD%B8%E7%B6%B2%E7%AB%99.html">討論與自學網站</a>
+        <a href="https://simonsohai.github.io/-01/%E8%AD%89%E7%85%A7.html">證照</a>
+        <a href="https://docs.google.com/document/d/1GG02pwnsqyk6ZqLOTy2Ru9PGzsZ6IUL-j-SN8Y3Og6A/edit?usp=sharing">專題製作</a>
+        <a href="https://simonsohai.github.io/-/%E8%81%AF%E7%B5%A1%E8%B3%87%E8%A8%8A.html">聯絡資訊</a>
+    </div>
+    <h3>撰寫者：郭子綸</h3>
+    <h1>金融程式設計與應用(PyThon程式設計)</h1>
+    <h2>K線繪製</h2>
+    <img src="https://i.imgur.com/DiYGNz7.png"><br>
+    <h2>主要是為了能了解各時段的成交量以及趨勢再做一些技術分析（此股市依台積電為例的K線</h2><br>
+    <hr>
+    
+    <div>
+    <h3>程式碼</h3>
+
+    import pandas as pd #K線舊方法<br>
+df = pd.DataFrame([<br>
+    ['2023-08-01', 7016193, 595.00, 612.00, 587.00, 611.00],<br>
+    ['2023-08-02', 8072420, 629.00, 638.00, 622.00, 632.00],<br>
+    ['2023-08-03', 5976322, 638.00, 642.00, 630.00, 630.00],<br>
+    ['2023-08-04', 4754787, 626.00, 632.00, 620.00, 627.00],<br>
+    ['2023-08-05', 5735083, 638.00, 641.00, 631.00, 632.00],<br>
+    ['2023-08-17', 11557840, 663.00, 668.00, 660.00, 663.00],<br>
+    ['2023-08-18', 5452034, 664.00, 665.00, 656.00, 660.00],<br>
+    ['2023-08-19', 5165184, 656.00, 657.00, 647.00, 652.00],<br>
+    ['2023-08-22', 3951207, 660.00, 662.00, 650.00, 650.00],<br>
+    ['2023-08-23', 5286802, 641.00, 643.00, 633.00, 641.00],<br>
+    ['2023-08-24', 8001063, 627.00, 636.00, 625.00, 625.00],<br>
+    ['2023-08-25', 4527927, 636.00, 636.00, 628.00, 635.00],<br>
+    ['2023-08-26', 13793316, 611.00, 618.00, 606.00, 606.00],<br>
+], columns = ['Date', 'Volume', 'Open', 'High', 'Low', 'Close'])<br><br>
+
+!pip install mplfinance<br>
+df['Date'] = pd.to_datetime(df['Date'], format = '%Y-%m-%d')<br>
+df.set_index('Date', inplace = True)<br>
+import mplfinance as mpf<br>
+mpf.plot(df,<br>
+        type = 'candle',<br>
+        title = '2330',<br>
+        volume = True,<br>
+        ylabel_lower = 'Shares')<br>
+mpf.plot(df, type = 'candlestick', style = 'yahoo', ylabel = '$(Ho)', title = '2330')<br>
+mc = mpf.make_marketcolors(up = 'r',<br>
+                           down = 'g',<br>
+                           edge = '',<br>
+                           wick = 'inherit',<br>
+                           volume = 'inherit')<br>
+s = mpf.make_mpf_style(base_mpf_style = 'yahoo', marketcolors = mc)<br>
+mpf.plot(df, type = 'candle', style = s, volume = True)<br><br>
+
+#新方法<br>
+!pip install mplfinance<br>
+import pandas as pd<br>
+from Data import getDataYF, getDataFM<br>
+import mplfinance as mpf<br>
+prod = "^GSPC"<br>
+data = getDataYF(prod)<br>
+data = data.iloc[-100:]<br>
+mpf.plot(data)<br>
+mpf.plot(data, type = "candle")<br>
+mpf.plot(data, type = "candle", style = "yahoo")<br>
+mcolor = mpf.make_marketcolors(up = "r", down = "g", inherit = True)<br>
+mstyle = mpf.make_mpf_style(base_mpf_style = "yahoo", marketcolors = mcolor)<br>
+mpf.plot(data, type = "candle", style = mstyle)
+</div>
+
+<hr>
+
+<h2>繪製股市的週線、月線、季線</h2>
+<img src="https://i.postimg.cc/J7cJ3QFb/image.png"><br>
+<h2>BTC-USD（比特幣）</h2><br>
+<img src="https://i.postimg.cc/43W4Nm2H/image.png"><br>
+<h2>APPL（APPLE）</h2><br>
+<img src="https://i.postimg.cc/gjjWJWBz/image.png"><br>
+<h2>主要是繪製該股市的週線、月線、季線去抓出死亡加差與黃金交叉（此股市依比特幣、APPLE為例</h2><br>
+    <hr>
+    
+    <div>
+    <h3>程式碼</h3>
+    
+
+    !pip install mplfinance<br>
+    !pip install yfinance<br>
+    
+    from Data import getDataYF<br>
+    import mplfinance as mpf<br>
+    mcolor = mpf.make_marketcolors(up = "r", down = "g", inherit = True)<br>
+    mstyle = mpf.make_mpf_style(base_mpf_style = "yahoo", marketcolors = mcolor)<br>
+    prod = "BTC-USD"<br>
+    data = getDataYF(prod)<br>
+    data["5ma"] = data.rolling(5)["close"].mean()<br>
+    data["20ma"] = data.rolling(20)["close"].mean()<br>
+    data["60ma"] = data.rolling(60)["close"].mean()<br>
+    data = data.iloc[-200:].copy()<br>
+    addp = []<br>
+    addp.append(mpf.make_addplot(data["5ma"]))<br>
+    addp.append(mpf.make_addplot(data["20ma"]))<br>
+    addp.append(mpf.make_addplot(data["60ma"]))<br>
+    mpf.plot(data, type = "candle", style = mstyle, addplot = addp)
+    
+    </div>
+
+    <hr>
+
+<h2>繪製股市的壓力線與移動平均</h2>
+<img src="https://i.postimg.cc/CM4jjVrh/image.png"><br>
+<h2>2393（億光電子）</h2><br>
+<img src="https://i.postimg.cc/nrspcxC4/image.png"><br>
+<h2>主要是繪製該股市的壓力線與移動平均（此股市依億光電子為例的壓力線與移動平均</h2><br>
+    <hr>
+    
+    <div>
+    <h3>程式碼</h3>
+    
+
+!pip install mplfinance<br>
+!pip install yfinance<br>
+
+
+from Data import getDataFM<br>
+import mplfinance as mpf<br>
+prod = "2393"<br>
+data = getDataFM(prod)<br>
+mcolor = mpf.make_marketcolors(up = "r", down = "g", inherit = True)<br>
+mstyle = mpf.make_mpf_style(base_mpf_style = "yahoo", marketcolors = mcolor)<br>
+data["ceil"] = data.rolling(60)["close"].max()<br>
+data["floor"] = data.rolling(60)["close"].min()<br>
+data = data.iloc[-200:].copy()<br>
+addp = []<br>
+addp.append(mpf.make_addplot(data["ceil"]))<br>
+addp.append(mpf.make_addplot(data["floor"]))<br>
+mpf.plot(data, type = "candle", style = mstyle, addplot = addp)
+    </div>
+</body>
+</html>
